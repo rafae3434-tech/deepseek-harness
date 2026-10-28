@@ -52,10 +52,11 @@ agents:
     tools: [rea, cua-driver]
 
   antigravity:
-    runtime: antigravity
+    runtime: agy
+    command: /home/pc-1/.local/bin/agy
     role: browser-and-computer-use
     permissions: [assigned-worktree-read, assigned-worktree-write, loopback-web]
-    tools: [cua-driver, playwright-mcp]
+    tools: [agy, cua-driver, playwright-mcp]
 
   hermes:
     runtime: hermes

@@ -56,6 +56,15 @@ credenciales:
 Harness² queda instalado de forma aislada en `outputs/harness2-venv/`; su demo
 local ya pasó sin credenciales.
 
+Graphify queda instalado con su extra Gemini y tiene un lanzador reproducible
+en `scripts/graphify-orca.sh`. Por defecto usa un modelo `:free` de OpenRouter;
+se puede seleccionar Gemini con `GRAPHIFY_PROVIDER=gemini`. La extracción
+semántica sólo se marca `PASS` cuando produce `graphify-out/graph.json`.
+
+Antigravity CLI queda registrado como `agy` (el nombre oficial del ejecutable),
+y `npx` queda disponible mediante el shim local de npm 11. REA se valida con
+`npx --yes rea-agents@6.8.0 mcp doctor --format json` antes de usarlo.
+
 ## GitHub MCP preparado
 
 GitHub MCP queda preparado en modo `read-only` para `rafae3434-tech/deepseek-harness`.
