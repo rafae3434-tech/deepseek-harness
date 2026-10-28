@@ -1,0 +1,32 @@
+schema: 1
+name: github-mcp-readonly
+
+# The value is supplied at runtime by 1Password. Never place a token here.
+secret_ref: GITHUB_PERSONAL_ACCESS_TOKEN
+
+transport:
+  type: streamable-http
+  url: https://api.githubcopilot.com/mcp/x/all/readonly
+  headers:
+    X-MCP-Readonly: "true"
+
+toolsets:
+  - repos
+  - issues
+  - pull_requests
+
+scope:
+  owner: rafael3434-tech
+  repositories:
+    - deepseek-harness
+  access: read-only
+
+verification:
+  allowed_targets:
+    - rafael3434-tech/deepseek-harness
+  forbidden_operations:
+    - write
+    - administration
+    - secrets
+    - workflows
+    - billing

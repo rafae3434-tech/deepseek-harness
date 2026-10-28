@@ -56,10 +56,15 @@ credenciales:
 Harness² queda instalado de forma aislada en `outputs/harness2-venv/`; su demo
 local ya pasó sin credenciales.
 
-## Pendiente externo: GitHub MCP
+## GitHub MCP preparado
 
-GitHub MCP queda `BLOCKED` de forma explícita: el `gh` local es 2.46.0 y no
-incluye el subcomando MCP, y 1Password no contiene una variable de token de
-GitHub API dedicada. `GITHUB_MODELS_TOKEN_1` no se reutiliza como PAT sin
-confirmar su alcance. La activación segura requiere un token/OAuth con alcance
-de sólo lectura y una conexión MCP que se pueda verificar de extremo a extremo.
+GitHub MCP queda preparado en modo `read-only` para `rafae3434-tech/deepseek-harness`.
+La configuración está en `ops/orca/github-mcp.yaml` y sólo espera la referencia
+`GITHUB_PERSONAL_ACCESS_TOKEN` administrada por 1Password. No se reutiliza
+`GITHUB_MODELS_TOKEN_1` porque su alcance no está confirmado.
+
+Para activarlo, crea un fine-grained token con `Metadata`, `Contents`, `Issues`
+y `Pull requests` en `Read-only`, limitado a este repositorio, y guárdalo como
+variable oculta `GITHUB_PERSONAL_ACCESS_TOKEN` en 1Password. Después responde
+`token guardado`; la verificación sólo mostrará nombres de variables y estados,
+nunca el valor secreto.

@@ -23,9 +23,9 @@ agents:
     runtime: local-web
     entrypoint: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/deepseek-harness/scripts/run-local.sh
     model_default: abliterated-model-large-flash
-    tools: [playwright-mcp, firecrawl-mcp, nuclei, rea-mcp]
+    tools: [playwright-mcp, firecrawl-mcp, github-mcp-readonly, nuclei, rea-mcp]
     permissions: [workspace-read, workspace-write, loopback-web, provider-egress]
-    secret_refs: [Abliteracion, Fireclaw, HUGGINGFACE_API_KEY_1, OPENROUTER_API_KEY_1, GROQ_API_KEY_1, NVIDIA_API_KEY_1]
+    secret_refs: [Abliteracion, Fireclaw, GITHUB_PERSONAL_ACCESS_TOKEN, HUGGINGFACE_API_KEY_1, OPENROUTER_API_KEY_1, GROQ_API_KEY_1, NVIDIA_API_KEY_1]
 
   opencode:
     runtime: opencode
@@ -86,6 +86,11 @@ agents:
     default_model: abliterated-model-large-flash
 
 integrations:
+  github:
+    transport: official-mcp
+    config: ops/orca/github-mcp.yaml
+    enabled: true
+    target_scope: own-repository-read-only
   playwright:
     transport: official-mcp
     enabled: true
