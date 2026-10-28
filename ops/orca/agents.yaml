@@ -21,7 +21,7 @@ agents:
 
   deepseek-harness:
     runtime: local-web
-    entrypoint: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/deepseek-harness/scripts/run-local.sh
+    entrypoint: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/deepseek-harness/run-local.sh
     model_default: abliterated-model-large-flash
     tools: [playwright-mcp, firecrawl-mcp, github-mcp-readonly, nuclei, rea-mcp]
     permissions: [workspace-read, workspace-write, loopback-web, provider-egress]
@@ -102,6 +102,6 @@ integrations:
     target_scope: user-authorized-public-pages-only
   nuclei:
     transport: terminal
-    binary: nuclei
+    binary: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/deepseek-harness/tools/bin/nuclei
     enabled: true
     target_scope: loopback-or-own-test-app-only
