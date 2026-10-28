@@ -56,10 +56,19 @@ credenciales:
 Harness² queda instalado de forma aislada en `outputs/harness2-venv/`; su demo
 local ya pasó sin credenciales.
 
-Graphify queda instalado con su extra Gemini y tiene un lanzador reproducible
-en `scripts/graphify-orca.sh`. Por defecto usa un modelo `:free` de OpenRouter;
-se puede seleccionar Gemini con `GRAPHIFY_PROVIDER=gemini`. La extracción
-semántica sólo se marca `PASS` cuando produce `graphify-out/graph.json`.
+Graphify queda instalado con un lanzador reproducible en
+`scripts/graphify-orca.sh`. La ruta predeterminada es estructural y local:
+extrae el código con AST, no necesita API key y usa `scripts` como corpus para
+mantener el consumo bajo. Se puede cambiar el alcance con
+`GRAPHIFY_PATH=...` y la salida con `GRAPHIFY_OUT=...`.
+
+La extracción semántica de documentación es opcional y se activa con
+`GRAPHIFY_MODE=semantic`; requiere una clave administrada externamente y puede
+usar Gemini (`GRAPHIFY_PROVIDER=gemini`) u OpenRouter con un modelo `:free`.
+La extracción sólo se marca `PASS` cuando produce un `graphify-out/graph.json`
+no vacío. Los fixtures binarios de pruebas se excluyen mediante
+`.graphifyignore` para evitar que un archivo ofimático cifrado detenga el
+análisis.
 
 Antigravity CLI queda registrado como `agy` (el nombre oficial del ejecutable),
 y `npx` queda disponible mediante el shim local de npm 11. REA se valida con
