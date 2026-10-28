@@ -20,4 +20,4 @@ set -a
 set +a
 
 export DSH_HOME="$ROOT/.dsh-home"
-exec node --import tsx/esm apps/cli/src/bin.ts web --no-open "$@"
+exec node --import tsx/esm apps/cli/src/bin.ts web "$@"
