@@ -41,3 +41,25 @@ Desde la raíz del checkout:
 El script sólo emite estado y no imprime secretos. Para una primera ejecución
 de Harness² use `--dry-run`, `k=1` y una tarea mínima; una ejecución completa
 puede generar múltiples llamadas de modelo y consumir cuota.
+
+## Routing y salud
+
+`ops/orca/provider-routing.yaml` documenta el fallback acotado y
+`scripts/provider-route.sh` selecciona el primer proveedor que responda a un
+canario corto. `scripts/orca-health-snapshot.sh` genera un informe temporal sin
+credenciales:
+
+```bash
+./scripts/orca-health-snapshot.sh /tmp/orca-harness-health.json
+```
+
+Harness² queda instalado de forma aislada en `outputs/harness2-venv/`; su demo
+local ya pasó sin credenciales.
+
+## Pendiente externo: GitHub MCP
+
+GitHub MCP queda `BLOCKED` de forma explícita: el `gh` local es 2.46.0 y no
+incluye el subcomando MCP, y 1Password no contiene una variable de token de
+GitHub API dedicada. `GITHUB_MODELS_TOKEN_1` no se reutiliza como PAT sin
+confirmar su alcance. La activación segura requiere un token/OAuth con alcance
+de sólo lectura y una conexión MCP que se pueda verificar de extremo a extremo.

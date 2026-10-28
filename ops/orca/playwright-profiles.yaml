@@ -1,0 +1,23 @@
+schema: 1
+server: playwright
+transport: stdio
+
+profiles:
+  default:
+    caps: [testing, storage]
+    purpose: local-app-tests-and-authenticated-test-state
+    target_scope: own-test-app-only
+  network-debug:
+    caps: [testing, storage, network, devtools]
+    activation: explicit
+    purpose: bounded-debugging-only
+  visual-pdf:
+    caps: [testing, storage, pdf, vision]
+    activation: explicit
+    purpose: explicit-visual-or-pdf-task-only
+
+resource_policy:
+  persistent_browser_profiles: per-workspace
+  shared_browser_context: false
+  idle_timeout: provider-default
+  external_targets: approval-required
