@@ -1,0 +1,47 @@
+schema: 1
+policy_id: local-orca-least-privilege-v1
+
+allow:
+  filesystem:
+    read:
+      - /home/pc-1/Documents/Codex/2026-10-27/here/outputs/deepseek-harness
+      - /home/pc-1/Documents/Codex/2026-10-27/here/outputs/rea
+    write:
+      - /home/pc-1/Documents/Codex/2026-10-27/here/outputs/deepseek-harness
+      - /tmp/orca-harness-runs
+  network:
+    loopback: true
+    provider_hosts:
+      - api.abliteration.ai
+      - openrouter.ai
+      - api.groq.com
+      - integrate.api.nvidia.com
+      - router.huggingface.co
+      - mcp.context7.com
+      - firecrawl.dev
+  process:
+    commands: [git, node, npx, npm, pnpm, rg, nuclei, python3]
+
+require_approval:
+  - credentials_or_1password
+  - non-loopback-security-target
+  - external-write
+  - git-push
+  - git-merge-or-delete
+  - sudo-or-privileged-operation
+  - ssh-or-remote-host
+  - billing-or-provider-plan-change
+
+deny:
+  - print-or-log-secret-values
+  - broad-home-directory-write
+  - unrestricted-network-scan
+  - benchmark-answer-or-rubric-access
+  - modification-of-codex-user-config
+
+resource_budgets:
+  max_parallel_agents: 2
+  max_harness2_k: 1
+  max_canary_seconds: 30
+  max_nuclei_rate: 2
+  max_nuclei_targets: 1

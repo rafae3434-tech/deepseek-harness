@@ -1,0 +1,5 @@
+# Test fixtures are not application architecture and may be encrypted or malformed.
+**/fixtures/**
+**/*.xlsx
+**/*.xls
+**/*.docx

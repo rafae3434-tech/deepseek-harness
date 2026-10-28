@@ -1,0 +1,27 @@
+schema: 1
+name: bounded-provider-routing-v1
+
+policy:
+  default: abliteration/abliterated-model-large-flash
+  fallback_order:
+    - nvidia/nvidia/nemotron-3.5-lightning-30b-a3b
+    - groq/openai/gpt-oss-20b
+    - openrouter/nvidia/nemotron-3.5-lightning:free
+  disabled:
+    - huggingface/deepseek-ai/DeepSeek-V4.1-Flash:fastest
+    - huggingface/Qwen/Qwen3.8-27B:fastest
+  disabled_reason:
+    huggingface: account has no remaining inference credit
+
+budgets:
+  max_attempts: 2
+  timeout_seconds: 60
+  max_output_tokens: 4096
+  retry_on: [timeout, 429, 500, 502, 503, 504]
+  do_not_retry_on: [401, 402, 403, 404, 410]
+
+selection:
+  coding: [abliteration, nvidia, groq]
+  browser: [abliteration, nvidia]
+  low_cost: [openrouter, nvidia]
+  image_input: [abliteration]
