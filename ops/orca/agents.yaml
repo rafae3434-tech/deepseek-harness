@@ -33,6 +33,30 @@ agents:
     permissions: [assigned-worktree-read, assigned-worktree-write, provider-egress]
     tools: [cua-driver, context7]
 
+  claude:
+    runtime: claude-code
+    role: implementation-and-review
+    permissions: [assigned-worktree-read, assigned-worktree-write, provider-egress]
+    tools: [orca-status, agent-reach]
+
+  gemini:
+    runtime: gemini-cli
+    role: research-and-implementation
+    permissions: [assigned-worktree-read, assigned-worktree-write, provider-egress]
+    tools: [cua-driver, agent-reach]
+
+  copilot:
+    runtime: github-copilot
+    role: implementation-and-review
+    permissions: [assigned-worktree-read, assigned-worktree-write, provider-egress]
+    tools: [rea, cua-driver]
+
+  antigravity:
+    runtime: antigravity
+    role: browser-and-computer-use
+    permissions: [assigned-worktree-read, assigned-worktree-write, loopback-web]
+    tools: [cua-driver, playwright-mcp]
+
   hermes:
     runtime: hermes
     role: local-cli-fallback
@@ -53,6 +77,13 @@ agents:
     launch_policy: on-demand
     permissions: [diagnostic-read, bounded-repair-in-worktree]
     forbidden_without_approval: [secret-access, billing, publication, destructive-disk, physical-device]
+
+  harness-local:
+    runtime: dsh
+    role: local-model-and-mcp-executor
+    entrypoint: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/deepseek-harness/scripts/desktop-launch.sh
+    permissions: [workspace-read, workspace-write, loopback-web, provider-egress]
+    default_model: abliterated-model-large-flash
 
 integrations:
   playwright:
