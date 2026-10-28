@@ -1,0 +1,70 @@
+schema: 1
+name: deepseek-harness-orca
+host: local
+workspace_root: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/deepseek-harness
+
+defaults:
+  worktree: required-for-mutating-agents
+  network: provider-endpoints-only
+  secrets: environment-references-only
+  max_parallel_agents: 2
+  max_recursion_k: 1
+  approval_mode: explicit-for-external-or-destructive
+  test_target: own-local-test-app-only
+
+agents:
+  coordinator:
+    runtime: orca
+    role: dispatch-and-collect
+    tools: [repo-read, worktree-create, task-dispatch, result-collect]
+    permissions: [workspace-read, worktree-write]
+
+  deepseek-harness:
+    runtime: local-web
+    entrypoint: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/deepseek-harness/scripts/run-local.sh
+    model_default: abliterated-model-large-flash
+    tools: [playwright-mcp, firecrawl-mcp, nuclei, rea-mcp]
+    permissions: [workspace-read, workspace-write, loopback-web, provider-egress]
+    secret_refs: [Abliteracion, Fireclaw, HUGGINGFACE_API_KEY_1, OPENROUTER_API_KEY_1, GROQ_API_KEY_1, NVIDIA_API_KEY_1]
+
+  opencode:
+    runtime: opencode
+    role: implementation-and-review
+    permissions: [assigned-worktree-read, assigned-worktree-write, provider-egress]
+    tools: [cua-driver, context7]
+
+  hermes:
+    runtime: hermes
+    role: local-cli-fallback
+    permissions: [assigned-worktree-read, assigned-worktree-write, provider-egress]
+    tools: [orca-status]
+
+  rea:
+    runtime: mcp-stdio
+    command: /home/pc-1/Documents/Codex/2026-10-27/here/tools/node-v24.22.1-linux-x64/bin/npx
+    args: [-y, rea-agents@6.8.0, mcp]
+    role: static-analysis-and-reverse-engineering
+    permissions: [read-only-targets]
+
+  codex-repair:
+    runtime: codex
+    role: repair-diagnostics-recovery
+    immutable_config: true
+    launch_policy: on-demand
+    permissions: [diagnostic-read, bounded-repair-in-worktree]
+    forbidden_without_approval: [secret-access, billing, publication, destructive-disk, physical-device]
+
+integrations:
+  playwright:
+    transport: official-mcp
+    enabled: true
+    target_scope: own-test-app-only
+  firecrawl:
+    transport: official-mcp-streamable-http
+    enabled: true
+    target_scope: user-authorized-public-pages-only
+  nuclei:
+    transport: terminal
+    binary: nuclei
+    enabled: true
+    target_scope: loopback-or-own-test-app-only
