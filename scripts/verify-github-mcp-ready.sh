@@ -16,5 +16,15 @@ if grep -RInE '(^|[^A-Za-z])(gh[pousr]_[A-Za-z0-9_]+|github_pat_[A-Za-z0-9_]+|Be
 fi
 
 echo "PASS github-mcp-config"
-echo "PENDING github-mcp-token-in-1password"
+if [[ -p "$ROOT/.env" || -f "$ROOT/.env" ]]; then
+  set -a
+  . "$ROOT/.env"
+  set +a
+fi
+if [[ -n "${GITHUB_PERSONAL_ACCESS_TOKEN:-}" ]]; then
+  echo "PASS github-mcp-token-in-1password"
+else
+  echo "PENDING github-mcp-token-in-1password"
+  exit 2
+fi
 echo "INFO secret_ref=GITHUB_PERSONAL_ACCESS_TOKEN"
