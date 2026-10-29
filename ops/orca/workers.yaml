@@ -1,0 +1,39 @@
+schema: 1
+purpose: optional-framework-workers-under-orca
+coordinator: coordinator
+activation: explicit-per-task
+cost_policy: local-only-until-provider-approved
+
+workers:
+  strands:
+    runtime: python-isolated
+    python: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/orca-workers-uv-venv/bin/python
+    package: strands-agents
+    capabilities: [mcp, multi-provider, tools, structured-output, sessions, tracing]
+    default_mode: local-canary
+    hosted_control_plane: false
+    model_calls: disabled-by-default
+
+  langgraph:
+    runtime: python-isolated
+    python: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/orca-workers-uv-venv/bin/python
+    package: langgraph
+    capabilities: [state-graphs, checkpoints, persistence, interrupts, durable-workflows]
+    default_mode: local-canary
+    hosted_control_plane: false
+    model_calls: disabled-by-default
+
+  microsoft-agent-framework:
+    runtime: python-isolated
+    python: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/orca-workers-uv-venv/bin/python
+    package: agent-framework
+    capabilities: [agents, harness, workflows, mcp, provider-adapters]
+    default_mode: local-canary
+    hosted_control_plane: false
+    model_calls: disabled-by-default
+
+guardrails:
+  - workers-cannot-become-coordinator
+  - no-cloud-provisioning
+  - no-provider-call-without-explicit-route
+  - no-secret-values-in-worker-logs

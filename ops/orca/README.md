@@ -115,3 +115,19 @@ REA mantiene dos límites deliberados: el análisis de navegador necesita un
 endpoint CDP de bucle local con orígenes explícitos, y los motores Hopper,
 Ghidra e IDA son capacidades opcionales de análisis nativo, no requisitos para
 el flujo Harness/Orca.
+
+## Trabajadores opcionales
+
+Strands Agents, LangGraph y Microsoft Agent Framework se mantienen en
+`outputs/orca-workers-uv-venv/` y se registran en `ops/orca/workers.yaml`.
+Orca los activa por tarea; ninguno puede reemplazar al coordinador ni hacer
+llamadas de modelo por defecto. `scripts/verify-framework-workers.sh` valida
+las importaciones sin contactar proveedores.
+
+## REA + Google
+
+La sesión dedicada de Chrome usa el perfil local
+`~/.local/share/rea-google-cdp-profile`, CDP en `127.0.0.1:9222` y orígenes
+Google explícitos. El usuario debe iniciar sesión manualmente. Es posible
+usar varias cuentas dentro de ese perfil, pero no se conceden cookies ni
+acceso global al perfil personal existente.

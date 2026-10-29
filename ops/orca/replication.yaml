@@ -15,6 +15,10 @@ required:
     kind: provider-check
   - path: scripts/tailscale-orca-status.sh
     kind: read-only-network-check
+  - path: ops/orca/workers.yaml
+    kind: optional-worker-manifest
+  - path: scripts/verify-framework-workers.sh
+    kind: worker-health-check
 
 local_runtime:
   - name: node
@@ -27,6 +31,8 @@ local_runtime:
     command: tools/bin/nuclei
   - name: tailscale
     command: tailscale
+  - name: orca-worker-python
+    command: outputs/orca-workers-uv-venv/bin/python
 
 secret_refs:
   - Abliteracion

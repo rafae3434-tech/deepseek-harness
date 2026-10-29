@@ -94,6 +94,27 @@ agents:
     permissions: [diagnostic-read, loopback-web]
     forbidden_without_approval: [tailscale-login, tailscale-up, tailscale-down, tailscale-set, tailscale-serve, tailscale-funnel, tailscale-ssh]
 
+  strands-worker:
+    runtime: python-isolated
+    manifest: ops/orca/workers.yaml
+    role: optional-mcp-and-multi-provider-worker
+    launch_policy: explicit-per-task
+    permissions: [assigned-worktree-read, assigned-worktree-write, provider-egress]
+
+  langgraph-worker:
+    runtime: python-isolated
+    manifest: ops/orca/workers.yaml
+    role: optional-durable-workflow-worker
+    launch_policy: explicit-per-task
+    permissions: [assigned-worktree-read, assigned-worktree-write]
+
+  microsoft-agent-framework-worker:
+    runtime: python-isolated
+    manifest: ops/orca/workers.yaml
+    role: optional-agent-and-workflow-worker
+    launch_policy: explicit-per-task
+    permissions: [assigned-worktree-read, assigned-worktree-write, provider-egress]
+
 integrations:
   github:
     transport: official-mcp

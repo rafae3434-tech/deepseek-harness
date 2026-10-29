@@ -21,12 +21,17 @@ for path in \
   [[ -f "$ROOT/$path" ]] && pass "file:$path" || fail "file:$path"
 done
 
+for path in ops/orca/workers.yaml scripts/verify-framework-workers.sh; do
+  [[ -f "$ROOT/$path" ]] && pass "file:$path" || fail "file:$path"
+done
+
 for command_name in node npx git curl; do
   command -v "$command_name" >/dev/null 2>&1 && pass "command:$command_name" || fail "command:$command_name"
 done
 
 [[ -x "$ROOT/tools/bin/nuclei" ]] && pass "local:nuclei" || fail "local:nuclei"
 [[ -x "$ROOT/scripts/tailscale-orca-status.sh" ]] && pass "local:tailscale-check" || fail "local:tailscale-check"
+[[ -x "$ROOT/scripts/verify-framework-workers.sh" ]] && pass "local:framework-check" || fail "local:framework-check"
 
 if grep -RInE '(^|[^A-Za-z])(sk-|nvapi-|hf_|fc-|Bearer[[:space:]])' "$ROOT/ops/orca" >/dev/null 2>&1; then
   fail "secret-literal-scan"
