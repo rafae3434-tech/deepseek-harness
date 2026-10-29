@@ -34,6 +34,21 @@ local_runtime:
   - name: orca-worker-python
     command: outputs/orca-workers-uv-venv/bin/python
 
+worker_restore:
+  venv: outputs/orca-workers-uv-venv
+  install_with: uv pip install --python outputs/orca-workers-uv-venv/bin/python strands-agents langgraph agent-framework
+
+browser_scope:
+  profile: ~/.local/share/rea-google-cdp-profile
+  cdp_endpoint: http://127.0.0.1:9222
+  allowed_origins:
+    - https://accounts.google.com
+    - https://mail.google.com
+    - https://drive.google.com
+    - https://console.cloud.google.com
+    - https://aistudio.google.com
+    - https://ai.google.dev
+
 secret_refs:
   - Abliteracion
   - Fireclaw
