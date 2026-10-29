@@ -1,0 +1,31 @@
+schema: 1
+name: tailscale-local-ops
+binary: /usr/bin/tailscale
+
+# Read-only diagnostics are allowed automatically. Any command that changes
+# login, routes, serving, ACL-related state, or network exposure requires an
+# explicit approval in Orca.
+readonly_commands:
+  - status --json
+  - ip -1
+  - ip -6
+  - netcheck
+  - version
+
+approval_required_commands:
+  - login
+  - logout
+  - up
+  - down
+  - set
+  - serve
+  - funnel
+  - ssh
+
+network_scope:
+  allowed: local-machine-and-user-tailnet-only
+  external_targets: approval-required
+
+secret_policy:
+  auth_keys: never-read-or-logged
+  environment_references_only: true

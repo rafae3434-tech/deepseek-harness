@@ -19,8 +19,9 @@ allow:
       - router.huggingface.co
       - mcp.context7.com
       - firecrawl.dev
+      - aws-mcp.us-east-1.api.aws
   process:
-    commands: [git, node, npx, npm, pnpm, rg, nuclei, python3]
+    commands: [git, node, npx, npm, pnpm, rg, nuclei, python3, tailscale, timeout, jq, aws, uvx]
 
 require_approval:
   - credentials_or_1password
@@ -30,12 +31,15 @@ require_approval:
   - git-merge-or-delete
   - sudo-or-privileged-operation
   - ssh-or-remote-host
+  - tailscale-mutating-operation
+  - aws-mutating-operation
   - billing-or-provider-plan-change
 
 deny:
   - print-or-log-secret-values
   - broad-home-directory-write
   - unrestricted-network-scan
+  - aws-resource-provisioning
   - benchmark-answer-or-rubric-access
   - modification-of-codex-user-config
 

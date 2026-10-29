@@ -16,14 +16,14 @@ agents:
   coordinator:
     runtime: orca
     role: dispatch-and-collect
-    tools: [repo-read, worktree-create, task-dispatch, result-collect]
+    tools: [repo-read, worktree-create, task-dispatch, result-collect, tailscale-readonly]
     permissions: [workspace-read, worktree-write]
 
   deepseek-harness:
     runtime: local-web
     entrypoint: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/deepseek-harness/run-local.sh
     model_default: abliterated-model-large-flash
-    tools: [playwright-mcp, firecrawl-mcp, github-mcp-readonly, nuclei, rea-mcp]
+    tools: [playwright-mcp, firecrawl-mcp, github-mcp-readonly, aws-mcp-readonly, nuclei, rea-mcp]
     permissions: [workspace-read, workspace-write, loopback-web, provider-egress]
     secret_refs: [Abliteracion, Fireclaw, GITHUB_PERSONAL_ACCESS_TOKEN, HUGGINGFACE_API_KEY_1, OPENROUTER_API_KEY_1, GROQ_API_KEY_1, NVIDIA_API_KEY_1]
 
@@ -86,6 +86,14 @@ agents:
     permissions: [workspace-read, workspace-write, loopback-web, provider-egress]
     default_model: abliterated-model-large-flash
 
+  tailscale-ops:
+    runtime: local-cli
+    command: /usr/bin/tailscale
+    role: tailscale-status-and-connectivity
+    tools: [tailscale-readonly]
+    permissions: [diagnostic-read, loopback-web]
+    forbidden_without_approval: [tailscale-login, tailscale-up, tailscale-down, tailscale-set, tailscale-serve, tailscale-funnel, tailscale-ssh]
+
 integrations:
   github:
     transport: official-mcp
@@ -105,3 +113,18 @@ integrations:
     binary: /home/pc-1/Documents/Codex/2026-10-27/here/outputs/deepseek-harness/tools/bin/nuclei
     enabled: true
     target_scope: loopback-or-own-test-app-only
+  tailscale:
+    transport: terminal
+    binary: /usr/bin/tailscale
+    enabled: true
+    default_operations: [status, ip, netcheck]
+    target_scope: local-machine-and-user-tailnet-only
+    mutating_operations_require_approval: true
+  aws-mcp:
+    transport: official-managed-mcp
+    endpoint: https://aws-mcp.us-east-1.api.aws/mcp
+    proxy_version: mcp-proxy-for-aws@1.6.3
+    enabled: true
+    target_scope: own-account-read-only
+    mutating_operations_require_approval: true
+    billing_or_provisioning: forbidden-by-default

@@ -1,0 +1,50 @@
+schema: 1
+name: deepseek-harness-orca-replication
+purpose: restore-local-orchestration-without-secrets-or-billing
+
+required:
+  - path: ops/orca/agents.yaml
+    kind: declarative-manifest
+  - path: ops/orca/policy.yaml
+    kind: safety-policy
+  - path: run-local.sh
+    kind: harness-entrypoint
+  - path: scripts/verify-orca-harness.sh
+    kind: health-check
+  - path: scripts/verify-local-connections.sh
+    kind: provider-check
+  - path: scripts/tailscale-orca-status.sh
+    kind: read-only-network-check
+
+local_runtime:
+  - name: node
+    command: node
+  - name: npx
+    command: npx
+  - name: orca
+    command: /home/pc-1/.cache/orca/appimage/launcher/orca-ide
+  - name: nuclei
+    command: tools/bin/nuclei
+  - name: tailscale
+    command: tailscale
+
+secret_refs:
+  - Abliteracion
+  - Fireclaw
+  - HUGGINGFACE_API_KEY_1
+  - OPENROUTER_API_KEY_1
+  - GROQ_API_KEY_1
+  - NVIDIA_API_KEY_1
+  - GITHUB_PERSONAL_ACCESS_TOKEN
+
+restore_rules:
+  - never-commit-secret-values
+  - never-create-cloud-resources-during-restore
+  - never-switch-github-account-automatically
+  - reauthenticate-expired-provider-sessions-interactively
+  - validate-loopback-before-provider-canary
+
+known_limitations:
+  - REA browser inspection requires a dedicated loopback CDP endpoint and explicit origins.
+  - AWS MCP requires a live temporary session; configuration alone is not a round-trip proof.
+  - Cloud quotas, subscriptions, and provider model availability are not portable state.

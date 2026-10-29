@@ -86,3 +86,32 @@ y `Pull requests` en `Read-only`, limitado a este repositorio, y guárdalo como
 variable oculta `GITHUB_PERSONAL_ACCESS_TOKEN` en 1Password. Después responde
 `token guardado`; la verificación sólo mostrará nombres de variables y estados,
 nunca el valor secreto.
+
+## Tailscale local
+
+Tailscale queda registrado como integración de terminal de solo lectura para
+Orca. El estado, las IP propias y la conectividad se pueden consultar con
+`scripts/tailscale-orca-status.sh`. Las operaciones que cambian la sesión,
+rutas, publicación, SSH o exposición de servicios requieren aprobación
+explícita y no reciben claves de autenticación.
+
+## AWS Agent Toolkit
+
+El MCP oficial de AWS queda habilitado para consultas de solo lectura usando
+la sesión temporal de `aws login`. El proxy está fijado en
+`mcp-proxy-for-aws@1.6.3`. Orca debe solicitar aprobación antes de cualquier
+operación que cree, modifique o elimine recursos, y la política local bloquea
+el aprovisionamiento por defecto.
+
+## Recuperación en otro equipo
+
+`ops/orca/replication.yaml` es el inventario declarativo de restauración.
+Después de clonar el repositorio y reinstalar los runtimes locales, ejecuta
+`scripts/verify-replication.sh`. El chequeo no crea recursos, no cambia cuentas
+y nunca imprime valores de secretos. Las claves se vuelven a resolver desde
+1Password y las sesiones externas se reautentican sólo cuando sea necesario.
+
+REA mantiene dos límites deliberados: el análisis de navegador necesita un
+endpoint CDP de bucle local con orígenes explícitos, y los motores Hopper,
+Ghidra e IDA son capacidades opcionales de análisis nativo, no requisitos para
+el flujo Harness/Orca.
