@@ -131,3 +131,9 @@ La sesión dedicada de Chrome usa el perfil local
 Google explícitos. El usuario debe iniciar sesión manualmente. Es posible
 usar varias cuentas dentro de ese perfil, pero no se conceden cookies ni
 acceso global al perfil personal existente.
+
+Ghidra 12.1.4 y un JDK 21 libre quedan instalados fuera del repositorio en
+`outputs/rea-tools/`. `scripts/rea-ghidra-env.sh` prepara `JAVA_HOME` y
+`GHIDRA_INSTALL_DIR` para las sesiones de REA. Hopper e IDA permanecen fuera
+del despliegue por ser productos propietarios; para esos casos se usa Ghidra
+y las inspecciones integradas de REA.

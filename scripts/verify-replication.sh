@@ -21,7 +21,7 @@ for path in \
   [[ -f "$ROOT/$path" ]] && pass "file:$path" || fail "file:$path"
 done
 
-for path in ops/orca/workers.yaml scripts/verify-framework-workers.sh; do
+for path in ops/orca/workers.yaml scripts/verify-framework-workers.sh scripts/rea-ghidra-env.sh; do
   [[ -f "$ROOT/$path" ]] && pass "file:$path" || fail "file:$path"
 done
 
@@ -32,6 +32,7 @@ done
 [[ -x "$ROOT/tools/bin/nuclei" ]] && pass "local:nuclei" || fail "local:nuclei"
 [[ -x "$ROOT/scripts/tailscale-orca-status.sh" ]] && pass "local:tailscale-check" || fail "local:tailscale-check"
 [[ -x "$ROOT/scripts/verify-framework-workers.sh" ]] && pass "local:framework-check" || fail "local:framework-check"
+[[ -x "$ROOT/scripts/rea-ghidra-env.sh" ]] && pass "local:ghidra-env" || fail "local:ghidra-env"
 
 if grep -RInE '(^|[^A-Za-z])(sk-|nvapi-|hf_|fc-|Bearer[[:space:]])' "$ROOT/ops/orca" >/dev/null 2>&1; then
   fail "secret-literal-scan"

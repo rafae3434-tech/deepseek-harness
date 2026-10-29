@@ -19,6 +19,8 @@ required:
     kind: optional-worker-manifest
   - path: scripts/verify-framework-workers.sh
     kind: worker-health-check
+  - path: scripts/rea-ghidra-env.sh
+    kind: optional-native-analysis-environment
 
 local_runtime:
   - name: node
@@ -33,6 +35,10 @@ local_runtime:
     command: tailscale
   - name: orca-worker-python
     command: outputs/orca-workers-uv-venv/bin/python
+  - name: java
+    command: outputs/rea-tools/jdk/bin/java
+  - name: ghidra
+    command: outputs/rea-tools/ghidra/ghidra_12.1.4_PUBLIC/ghidraRun
 
 worker_restore:
   venv: outputs/orca-workers-uv-venv
